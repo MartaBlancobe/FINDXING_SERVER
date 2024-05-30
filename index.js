@@ -1,9 +1,16 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 require('dotenv').config();
 
 const db = require('./config/db');
 const indexRouter = require('./routes/index');
+
+app.use(cors({
+  origin: 'https://findxing.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true
+}));
 
 app.use(express.json());
 
