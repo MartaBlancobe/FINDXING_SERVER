@@ -39,16 +39,24 @@ router.put('/registerUser', (req, res) => {
 });
 
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { usuario, password } = req.body;
-  const user = db.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario]);
-  const pass = db.query('SELECT * FROM usuarios WHERE usuario = ? AND password = ?', [usuario,password]);
-    if (user.length > 0 && pass.length > 0) {
-      return res.json('Inicio de sesión correcto');
-    }else if(user.length > 0 && pass.length <= 0 ){
-      return res.status(404).json('La contraseña no es correcta');
+  try {
+    const [user] = await db.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario]);
+    if (user.length > 0) {
+      const [pass] = await db.query('SELECT * FROM usuarios WHERE usuario = ? AND password = ?', [usuario, password]);
+      if (pass.length > 0) {
+        return res.json('Inicio de sesión correcto');
+      } else {
+        return res.status(404).json('La contraseña no es correcta');
+      }
+    } else {
+      res.status(404).json({ message: "El usuario no existe" });
     }
-  res.status(404).json({ message: "El usuario no existe" });
+  } catch (err) {
+    console.error('Error login:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 
