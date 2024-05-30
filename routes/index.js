@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+
 
 router.get('/', (req, res) => {
   res.send('Welcome to the Node.js with Express and MySQL API');
 });
 
 router.get('/users', (req, res) => {
+  const db = req.app.get('db');
   db.query('SELECT * FROM users', (err, results) => {
     if (err) {
       res.status(500).send(err);
@@ -17,6 +18,7 @@ router.get('/users', (req, res) => {
 });
 
 router.put('/formContact', (req, res) => {
+  const db = req.app.get('db');
   const { name, email } = req.body;
   db.query('INSERT INTO contactos set ?', [req.body], (err, results) => {
     if (err) {
@@ -28,6 +30,7 @@ router.put('/formContact', (req, res) => {
 });
 
 router.put('/registerUser', (req, res) => {
+  const db = req.app.get('db');
   const { name, email } = req.body;
   db.query('INSERT INTO usuarios set ?', [req.body], (err, results) => {
     if (err) {
@@ -40,6 +43,7 @@ router.put('/registerUser', (req, res) => {
 
 
 router.post('/login', async (req, res) => {
+  const db = req.app.get('db');
   const { usuario, password } = req.body;
   try {
     const [user] = await db.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario]);

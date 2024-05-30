@@ -13,7 +13,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
+app.set('db', db);
 app.use('/', indexRouter);
 
 const PORT = process.env.PORT || 3000;
