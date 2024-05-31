@@ -17,7 +17,7 @@ router.get('/users', (req, res) => {
   });
 });
 
-router.put('/formContact', (req, res) => {
+router.post('/formContact', (req, res) => {
   const db = req.app.get('db');
   const { name, email } = req.body;
   db.query('INSERT INTO contactos set ?', [req.body], (err, results) => {
@@ -29,7 +29,7 @@ router.put('/formContact', (req, res) => {
   });
 });
 
-router.put('/registerUser', (req, res) => {
+router.post('/registerUser', (req, res) => {
   const db = req.app.get('db');
   const { name, email } = req.body;
   db.query('INSERT INTO usuarios set ?', [req.body], (err, results) => {
