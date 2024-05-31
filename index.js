@@ -7,11 +7,13 @@ const app = express();
 const db = require('./config/db');
 const indexRouter = require('./routes/index');
 
-app.use(cors({
+/* app.use(cors({
   origin: 'https://findxing.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
-}));
+})); */
+
+app.use(cors());
 
 app.use(express.json());
 app.set('db', db);
